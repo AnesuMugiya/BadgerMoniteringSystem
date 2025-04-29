@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 
     'core',  # Core application
     'mqtt',  # MQTT application
-    # 'users',  # Users application
+    'users',  # Users application
 ]
 
 MIDDLEWARE = [
@@ -131,3 +131,27 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Sets CRISPY as the default template pack for the project
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+# Redirect URLs after login/logout
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL ='dashboard' # redirect to 'dashboard'
+LOGOUT_REDIRECT_URL ='logout' # redirect to 'login'
+
+# Media files settings
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+# Email settings for sending emails
+# This is used for sending emails to users for password reset and other notifications
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+

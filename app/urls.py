@@ -17,14 +17,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# Handles static files media and images
+from django.conf import settings
+from django.conf.urls.static import static
+
+# Urls from Users application
+from users import views as user_views
+# Urls from Django's autehnticating applications
+from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     # The URL pattern for the admin interface
     # This allows you to access the admin interface at /admin/
     path('admin/', admin.site.urls),
-
-    # The URL pattern for the core app
-    # This includes the URLs defined in the core app's urls.py file
-    path("core/", include("core.urls")),
-
+    
+    # The URL pattern for the users application
+    path('register/', user_views.register, name='register'),
+    path('account/', user_views.account, name='account'),
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('', include('core.urls')),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
