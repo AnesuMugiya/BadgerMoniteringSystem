@@ -1,5 +1,5 @@
 from django.http import HttpResponse
 
 
-def home(request):
+def dashboard(request):
     return HttpResponse("Hello, world. You're at the core index.")

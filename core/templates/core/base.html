@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Titles -->
+    {% if title %}
+        <title>Badger Moniter - {{ title }}</title>
+    {% else %}
+        <title>Badger Moniter</title>
+    {% endif %}
+</head>
+    <body>
+
+        
+        <div class="main-container">
+            <!-- Section For App Notifications Start-->
+            {% if messages %}
+               {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}">
+                     {{ message }}
+                  </div>
+               {% endfor %}
+            {% endif %}
+
+
+            <!-- Block Content Start -->
+            {% block content %}
+            <!-- Content goes here from other templates -->
+            {% endblock %}
+            <!-- Block Content End -->
+        </div>
+
+    </body>
+</html>
