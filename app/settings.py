@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # My Applications
     'django_bootstrap5',
+
+    'core',  # Core application
 ]
 
 MIDDLEWARE = [
