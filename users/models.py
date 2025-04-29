@@ -1,3 +1,30 @@
 from django.db import models
+from django.contrib.auth.models import User
+from PIL import Image
 
-# Create your models here.
+class Account(models.Model):
+    ROLES = (
+        ('ADMIN', 'System Administrator'),
+        ('RANGER', 'Wildlife Ranger'),
+        ('TECH', 'Technical Staff'),
+        ('VIEWER', 'Read-Only Viewer')
+    )
+    
+    role = models.CharField(max_length=10, choices=ROLES, default='VIEWER')
+    phone = models.CharField(max_length=15, blank=True)
+    email = models.EmailField(max_length=254, unique=True)
+    profile_pic = models.ImageField(upload_to='profiles/', null=True, blank=True)
+    receive_alerts = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.get_full_name()} ({self.role})"
+    
+
+class UserSession(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    login_time = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField()
+    user_agent = models.TextField()
+    
+    class Meta:
+        verbose_name = "User Login Session"
