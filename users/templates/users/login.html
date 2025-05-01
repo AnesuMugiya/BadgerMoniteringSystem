@@ -1,0 +1,102 @@
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/img/logo.png' %}">
+    <!-- Titles -->
+    {% if title %}
+        <title>Badger Monitor - {{ title }}</title>
+    {% else %}
+        <title>Badger Monitor</title>
+    {% endif %}
+
+    <!-- Bootstrap 5 -->
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-container">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <img src="{% static 'core/img/blsa-logo-transparent.png' %}" 
+                     alt="BLSA Logo"
+                     class="auth-logo"
+                     style="height: 80px; width: auto;">
+            <h2 class="fw-bold">Badger Monitor</h2>
+            <p class="text-muted">Honey Badger Deterrent System</p>
+        </div>
+        
+        <!-- Login Form -->
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            {% bootstrap_form form layout='floating' %}
+            
+            <div class="d-flex justify-content-between mb-3">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <a href="#" class="text-decoration-none">Forgot password?</a>
+            </div>
+            
+            <div class="d-grid gap-2">
+            <button class="btn btn-primary btn-lg" type="submit">
+                <i class='bx bx-log-in'></i> Sign In
+            </button>
+            </div>
+            
+            <div class="divider">
+            <span class="divider-text">OR</span>
+            </div>
+            
+            <div class="text-center">
+            <p class="text-muted">Don't have an account? 
+                <a href="{% url 'register' %}" class="text-decoration-none fw-bold">Register here</a>
+            </p>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script>
+        // Example form validation
+        (function () {
+        'use strict'
+        
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+        
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                }
+                
+                form.classList.add('was-validated')
+            }, false)
+            })
+        })()
+    </script>
+</body>
+</html>

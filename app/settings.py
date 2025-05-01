@@ -136,10 +136,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-# Redirect URLs after login/logout
+# Redirect URLs after login/logout/login required
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL ='dashboard' # redirect to 'dashboard'
-LOGOUT_REDIRECT_URL ='logout' # redirect to 'login'
+LOGOUT_REDIRECT_URL ='login' # redirect to 'login'
 
 # Media files settings
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

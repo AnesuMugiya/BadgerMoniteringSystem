@@ -1,4 +1,6 @@
+{% load django_bootstrap5 %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +8,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Boxicons CSS -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
     <!-- Titles -->
     {% if title %}
         <title>Badger Moniter - {{ title }}</title>
     {% else %}
         <title>Badger Moniter</title>
     {% endif %}
+
+    <!-- Boostrap 5 -->
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
     <body>
 

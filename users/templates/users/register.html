@@ -1,16 +1,125 @@
-{% extends "core/base.html" %}
-{% load crispy_forms_tags %}
-{% block content %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'core/img/logo.png' %}">
+    <!-- Titles -->
+    {% if title %}
+        <title>Badger Monitor - {{ title }}</title>
+    {% else %}
+        <title>Badger Monitor</title>
+    {% endif %}
+
+    <!-- Bootstrap 5 -->
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Let's Save The Penguins!</legend>
-            {{ form|crispy }}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Register</button>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'core/css/register.css' %}">
+    
+</head>
+
+<body>
+    <div class="split-container">
+        <!-- Hero Section with Image -->
+        <div class="hero-section">
+            
         </div>
-    </form>
         
-{% endblock content %}
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="auth-container">
+                <div class="text-center mb-4">
+                    <img src="{% static 'core/img/blsa-logo-transparent.png' %}" 
+                     alt="BLSA Logo"
+                     class="auth-logo"
+                     style="height: 80px; width: auto;">
+                    <h2 class="fw-bold">Create your account</h2>
+                    <p class="text-muted">Let's Save the Penguins!</p>
+                </div>
+                
+                <!-- Registration Form -->
+                <form method="POST" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    {% bootstrap_form form layout='floating' %}
+                    
+                    
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">
+                            I agree to the <a href="#" class="text-decoration-none">Terms of Service</a>
+                        </label>
+                        <div class="invalid-feedback">
+                            You must agree to the terms
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mb-3">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class='bx bx-user-plus'></i> Create Account
+                        </button>
+                    </div>
+                    
+                    <div class="divider">
+                        <span class="divider-text">ALREADY REGISTERED?</span>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-muted">Sign in to your account 
+                            <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Login here</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Validation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form validation
+            const forms = document.querySelectorAll('.needs-validation');
+            
+            forms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        
+                        // Scroll to first invalid field
+                        const invalid = form.querySelector(':invalid');
+                        if (invalid) {
+                            invalid.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }
+                    }
+                    
+                    form.classList.add('was-validated');
+                }, false);
+                
+                // Reset validation on input
+                form.querySelectorAll('.form-control').forEach(input => {
+                    input.addEventListener('input', () => {
+                        if (form.classList.contains('was-validated')) {
+                            input.classList.remove('is-invalid');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
