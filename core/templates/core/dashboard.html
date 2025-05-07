@@ -1,11 +1,5 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<h2>Dashboard</h2>
-
-<form method="post" action="{% url 'logout' %}">
-	{% csrf_token %}
-	<button type="submit">Logout</button>
-</form>
 
 
     
