@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+
+# Import the necessary libraries for MQTT
+import json
+import paho.mqtt.client as mqtt
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -154,4 +160,50 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+load_dotenv() # Load environment variables from .env file
+
+
+""" This initializes an MQTT client, connects to the broker, subscribes to a topic, 
+and prints received messages. Moreover, client.loop_start() runs the MQTT client in 
+a separate thread, ensuring it continues to listen for messages."""
+
+# Load MQTT Credentials
+MQTT_BROKER = os.getenv("MQTT_BROKER")
+MQTT_PORT = int(os.getenv("MQTT_PORT"))
+MQTT_USERNAME = os.getenv("MQTT_USERNAME")
+MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
+MQTT_TOPIC = os.getenv("MQTT_TOPIC")
+
+
+# Define MQTT Callbacks
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to MQTT Broker")
+        client.subscribe(MQTT_TOPIC)
+    else:
+        print(f"Connection failed with code {rc}")
+
+def on_message(client, userdata, msg):
+    try:
+        message = json.loads(msg.payload.decode("utf-8"))
+        print(f"Received message: {message}")
+        
+    except json.JSONDecodeError:
+        print("Error decoding MQTT message")
+
+def on_disconnect(client, userdata, rc):
+    print("Disconnected from MQTT Broker")
+
+
+# Create and configure MQTT Client
+client = mqtt.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+client.on_disconnect = on_disconnect
+
+client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
+client.connect(MQTT_BROKER, MQTT_PORT)
+
+client.loop_start()
 
