@@ -1,6 +1,217 @@
 {% extends 'core/base.html' %}
 {% block content %}
 
+{% comment %} 
+	<!-- Dashboard Overview Section -->
+	<section id="dashboard-section" class="content-section active">
+		<div class="row">
+			<!-- System Status Cards -->
+			<div class="col-md-6">
+				<div class="card status-card">
+					<div class="card-header">
+						<i class='bx bx-health'></i>
+						<h5>System Health</h5>
+					</div>
+					<div class="card-body">
+						<div class="health-item">
+							<span>AI Processor</span>
+							<div class="progress">
+								<div class="progress-bar bg-success" style="width: 85%">85%</div>
+							</div>
+						</div>
+						<div class="health-item">
+							<span>Camera Network</span>
+							<div class="progress">
+								<div class="progress-bar bg-warning" style="width: 65%">65%</div>
+							</div>
+						</div>
+						<div class="health-item">
+							<span>Deterrent System</span>
+							<div class="progress">
+								<div class="progress-bar bg-danger" style="width: 45%">45%</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Quick Actions -->
+			<div class="col-md-6">
+				<div class="card actions-card">
+					<div class="card-header">
+						<i class='bx bx-zap'></i>
+						<h5>Quick Actions</h5>
+					</div>
+					<div class="card-body">
+						<button class="action-btn btn-primary">
+							<i class='bx bx-lightbulb'></i> Activate Lights
+						</button>
+						<button class="action-btn btn-warning">
+							<i class='bx bx-alarm'></i> Sound Alarm
+						</button>
+						<button class="action-btn btn-danger">
+							<i class='bx bx-siren'></i> Emergency Mode
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Recent Alerts -->
+		<div class="row mt-4">
+			<div class="col-12">
+				<div class="card alerts-card">
+					<div class="card-header">
+						<i class='bx bx-list-ul'></i>
+						<h5>Recent Alerts</h5>
+						<div class="header-actions">
+							<button class="btn-sm btn-outline">View All</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="alert-item critical">
+							<div class="alert-icon">
+								<i class='bx bx-error-circle'></i>
+							</div>
+							<div class="alert-content">
+								<h6>Honey Badger Detected</h6>
+								<p>North Perimeter • 92% confidence</p>
+								<small>2 minutes ago</small>
+							</div>
+							<div class="alert-actions">
+								<button class="btn-sm btn-outline">Details</button>
+							</div>
+						</div>
+						<!-- More alert items... -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<!-- AI Processing Section -->
+	<section id="ai-section" class="content-section">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="card ai-processing-card">
+					<div class="card-header">
+						<i class='bx bx-brain'></i>
+						<h5>AI Processing</h5>
+					</div>
+					<div class="card-body">
+						<div class="ai-viewport">
+							<!-- Live camera feed placeholder -->
+							<div class="camera-feed">
+								<div class="processing-overlay">
+									<div class="processing-info">
+										<div class="confidence-meter">
+											<div class="confidence-fill" style="width: 78%"></div>
+											<span>78% Confidence</span>
+										</div>
+										<div class="decision-badge success">
+											Honey Badger Detected
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="camera-controls">
+								<button class="btn-control">
+									<i class='bx bx-zoom-in'></i>
+								</button>
+								<button class="btn-control active">
+									<i class='bx bx-current-location'></i>
+								</button>
+								<button class="btn-control">
+									<i class='bx bx-time'></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card ai-details-card">
+					<div class="card-header">
+						<i class='bx bx-detail'></i>
+						<h5>Processing Details</h5>
+					</div>
+					<div class="card-body">
+						<div class="detail-item">
+							<span class="detail-label">Model Version:</span>
+							<span class="detail-value">v2.3.1</span>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Inference Time:</span>
+							<span class="detail-value">142ms</span>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Last Training:</span>
+							<span class="detail-value">2023-07-15</span>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Accuracy:</span>
+							<span class="detail-value">94.2%</span>
+						</div>
+						<div class="model-actions mt-3">
+							<button class="btn-sm btn-outline">
+								<i class='bx bx-reset'></i> Reset Model
+							</button>
+							<button class="btn-sm btn-primary">
+								<i class='bx bx-cloud-upload'></i> Update
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<!-- Device Management Section -->
+	<section id="devices-section" class="content-section">
+		<div class="row">
+			<div class="col-12">
+				<div class="card devices-card">
+					<div class="card-header">
+						<i class='bx bx-chip'></i>
+						<h5>Deterrent Device Management</h5>
+						<div class="header-actions">
+							<button class="btn-sm btn-primary">
+								<i class='bx bx-plus'></i> Add Device
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="device-grid">
+							<div class="device-item online">
+								<div class="device-icon">
+									<i class='bx bx-siren'></i>
+								</div>
+								<div class="device-info">
+									<h6>Perimeter Alarm #1</h6>
+									<p>North Fence • Last active: 5 min ago</p>
+								</div>
+								<div class="device-status">
+									<span class="badge online">Online</span>
+								</div>
+								<div class="device-actions">
+									<button class="btn-icon">
+										<i class='bx bx-power-off'></i>
+									</button>
+									<button class="btn-icon">
+										<i class='bx bx-cog'></i>
+									</button>
+								</div>
+							</div>
+							<!-- More device items... -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+ {% endcomment %}
+
 
     
 {% endblock content %}
