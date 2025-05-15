@@ -33,7 +33,7 @@ def on_message(client, userdata, msg):
         print(f"Received message: {message}")
 
         # Store message in Django cache
-        cache.set("mqtt_data", message, timeout=10) # Store for 10 seconds
+        cache.set("mqtt_data", message, timeout=20) # Store for 10 seconds
         print("Message stored in cache")
         
     except json.JSONDecodeError:
