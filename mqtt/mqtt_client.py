@@ -8,6 +8,7 @@ import paho.mqtt.client as mqtt
 import os
 from dotenv import load_dotenv
 from django.core.cache import cache
+from detector import detector
 
 load_dotenv()
 
