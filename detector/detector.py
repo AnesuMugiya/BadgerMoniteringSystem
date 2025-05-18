@@ -1,9 +1,12 @@
 from ultralytics import YOLO
 import cv2
 import numpy as np
+import os
 
 # Load the model once when the module is imported
-model = YOLO("badgerDetector.pt")
+# Get the absolute path to the .pt file
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "badgerDetector.pt")
+model = YOLO(MODEL_PATH)
 
 def detector(image_path):
     """
