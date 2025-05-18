@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<section id="ai-section" class="content-section active">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card ai-processing-card">
+                <div class="card-header">
+                    <i class='bx bx-brain'></i>
+                    <h5>AI Processing</h5>
+                </div>
+                <div class="card-body">
+                    <div class="ai-viewport">
+                        <!-- Live camera feed placeholder -->
+                        <div class="camera-feed">
+                            <div class="processing-overlay">
+                                <div class="processing-info">
+                                    <div class="confidence-meter">
+                                        <div class="confidence-fill" style="width: 78%"></div>
+                                        <span>78% Confidence</span>
+                                    </div>
+                                    <div class="decision-badge success">
+                                        Honey Badger Detected
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="camera-controls">
+                            <button class="btn-control">
+                                <i class='bx bx-zoom-in'></i>
+                            </button>
+                            <button class="btn-control active">
+                                <i class='bx bx-current-location'></i>
+                            </button>
+                            <button class="btn-control">
+                                <i class='bx bx-time'></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card ai-details-card">
+                <div class="card-header">
+                    <i class='bx bx-detail'></i>
+                    <h5>Processing Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="detail-item">
+                        <span class="detail-label">Model Version:</span>
+                        <span class="detail-value">v2.3.1</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Inference Time:</span>
+                        <span class="detail-value">142ms</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Last Training:</span>
+                        <span class="detail-value">2023-07-15</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Accuracy:</span>
+                        <span class="detail-value">94.2%</span>
+                    </div>
+                    <div class="model-actions mt-3">
+                        <button class="btn-sm btn-outline">
+                            <i class='bx bx-reset'></i> Reset Model
+                        </button>
+                        <button class="btn-sm btn-primary">
+                            <i class='bx bx-cloud-upload'></i> Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

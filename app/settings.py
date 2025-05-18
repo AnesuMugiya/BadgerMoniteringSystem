@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'core',  # Core application
     'mqtt',  # MQTT application
     'users',  # Users application
+    'detector',  # Detector application
+    'nodes',  # Nodes application
 ]
 
 MIDDLEWARE = [
