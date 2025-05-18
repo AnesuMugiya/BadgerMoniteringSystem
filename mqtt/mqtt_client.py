@@ -22,6 +22,23 @@ MQTT_PORT = int(os.getenv("MQTT_PORT"))
 MQTT_USERNAME = os.getenv("MQTT_USERNAME")
 MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
 MQTT_TOPIC = os.getenv("MQTT_TOPIC")
+MQTT_RESPONSE_TOPIC = os.getenv("MQTT_RESPONSE_TOPIC")  # Default fallback
+
+def send_detection_response(client, original_message, detection_result):
+    """Send detection result back to the sender"""
+    response = {
+        'original_id': original_message.get('id'),
+        'original_node': original_message.get('node'),
+        'message': "True" if detection_result.detected else "False"
+    }
+    
+    client.publish(
+        topic=MQTT_RESPONSE_TOPIC,
+        payload=json.dumps(response),
+        qos=1,
+        retain=False
+    )
+    print(f"Sent detection response to {MQTT_RESPONSE_TOPIC}")
 
 def save_image_from_message(message):
     """Save image data from MQTT message to ImageFile model"""
@@ -55,7 +72,7 @@ def save_image_from_message(message):
         print(f"Error saving image: {str(e)}")
         return None
 
-def process_and_save_detection(image_record):
+def process_and_save_detection(image_record, original_message, client):
     from detector.models import ImageFile, Detection
     from nodes.models import Node
     """Process image and save detection results"""
@@ -78,6 +95,10 @@ def process_and_save_detection(image_record):
             input=image_record,
             output=output_file # If your detector returns processed image
         )
+
+        # Send response if something was detected
+        if detection.detected:
+            send_detection_response(client, original_message, detection)
         
         return detection
     except Exception as e:
@@ -95,7 +116,7 @@ def on_message(client, userdata, msg):
             return
             
         # Process the image and save results
-        detection = process_and_save_detection(image_record)
+        detection = process_and_save_detection(image_record, message, client)
         if detection:
             print(f"Detection saved: {detection}")
         
