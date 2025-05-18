@@ -7,11 +7,12 @@ import json
 import base64
 import paho.mqtt.client as mqtt
 import os
+import cv2
 from datetime import datetime
 from dotenv import load_dotenv
 from django.core.files.base import ContentFile
-from detector.models import ImageFiles, Detections
-from detector import detector  # Your image processing module
+
+from detector.detector import detector
 
 load_dotenv()
 
@@ -23,15 +24,15 @@ MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
 MQTT_TOPIC = os.getenv("MQTT_TOPIC")
 
 def save_image_from_message(message):
-    """Save image data from MQTT message to ImageFiles model"""
+    """Save image data from MQTT message to ImageFile model"""
+    from detector.models import ImageFile, Detection
+    from nodes.models import Node
+    
     try:
         # Extract data from message
+        node_id = message.get('id')
         node_name = message.get('node')
-        location = message.get('location')
         image_data = message.get('image')
-        
-        # Get or create Node instance (adjust based on your Node model)
-        node, _ = Node.objects.get_or_create(name=node_name, defaults={'location': location})
         
         # Decode base64 image data
         if image_data.startswith('data:image'):
@@ -39,33 +40,43 @@ def save_image_from_message(message):
             image_data = image_data.split(',')[1]
         img_bytes = base64.b64decode(image_data)
         
-        # Create ImageFiles instance
+        # Create ImageFile instance
         timestamp = datetime.now()
         img_file = ContentFile(img_bytes, name=f"{node_name}_{timestamp.strftime('%Y%m%d_%H%M%S')}.jpg")
         
-        image_record = ImageFiles.objects.create(
+        image_record = ImageFile.objects.create(
             image=img_file,
-            node=node,
+            node=Node.objects.get(id=node_id),
             timestamp=timestamp
         )
-        
+        image_record.save()
         return image_record
     except Exception as e:
         print(f"Error saving image: {str(e)}")
         return None
 
 def process_and_save_detection(image_record):
+    from detector.models import ImageFile, Detection
+    from nodes.models import Node
     """Process image and save detection results"""
     try:
         # Process image using your detector function
-        detection_result = detector(image_record.image.path)
+        output, score, detected = detector(image_record.image.path)
         
-        # Create Detections record
-        detection = Detections.objects.create(
-            detected=detection_result['detected'],
-            confidence=detection_result['confidence'],
+        # Encode result_img (OpenCV image) to JPEG bytes
+        success, buffer = cv2.imencode('.jpg', output)
+        if not success:
+            raise Exception("Could not encode processed image.")
+        
+        # Create a ContentFile for Django ImageField
+        output_file = ContentFile(buffer.tobytes(), name=f"processed_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg")
+        
+        # Create Detection record
+        detection = Detection.objects.create(
+            detected=detected,
+            confidence=max(score) if score else 0.0, 
             input=image_record,
-            output=detection_result.get('output_image')  # If your detector returns processed image
+            output=output_file # If your detector returns processed image
         )
         
         return detection
@@ -105,6 +116,7 @@ def on_disconnect(client, userdata, rc):
     print("Disconnected from MQTT Broker")
 
 # Create and configure MQTT Client
+
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
