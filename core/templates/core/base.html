@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#ai-processing" class="nav-link">
+                    <a href="{% url 'ai_dashboard' %}" class="nav-link">
                         <i class='bx bx-brain'></i>
                         <span>AI Processing</span>
                     </a>
@@ -138,6 +138,6 @@
         </main>
 
     <!-- JavaScript -->
-    <script src="{% static 'core/js/base.js' %}"></script>
+    {% comment %} <script src="{% static 'core/js/base.js' %}"></script> {% endcomment %}
     </body>
 </html>

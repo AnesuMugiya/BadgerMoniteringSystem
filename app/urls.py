@@ -38,6 +38,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', include('core.urls')),
     path('api/', include('mqtt.urls')), # Include the MQTT app URLs
+    path('detector/', include('detector.urls')), # Include the Detector app URLs
 
 ]
 

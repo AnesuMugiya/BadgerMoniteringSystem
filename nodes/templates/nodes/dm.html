@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<!-- Device Management Section -->
+<section id="devices-section" class="content-section">
+	<div class="row">
+		<div class="col-12">
+			<div class="card devices-card">
+				<div class="card-header">
+					<i class='bx bx-chip'></i>
+					<h5>Deterrent Device Management</h5>
+					<div class="header-actions">
+						<button class="btn-sm btn-primary">
+							<i class='bx bx-plus'></i> Add Device
+						</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="device-grid">
+						<div class="device-item online">
+							<div class="device-icon">
+								<i class='bx bx-siren'></i>
+							</div>
+							<div class="device-info">
+								<h6>Perimeter Alarm #1</h6>
+								<p>North Fence • Last active: 5 min ago</p>
+							</div>
+							<div class="device-status">
+								<span class="badge online">Online</span>
+							</div>
+							<div class="device-actions">
+								<button class="btn-icon">
+									<i class='bx bx-power-off'></i>
+								</button>
+								<button class="btn-icon">
+									<i class='bx bx-cog'></i>
+								</button>
+							</div>
+						</div>
+						<!-- More device items... -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock content %}

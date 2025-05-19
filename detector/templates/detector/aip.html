@@ -1,3 +1,4 @@
+
 {% extends 'core/base.html' %}
 {% block content %}
 
@@ -11,26 +12,34 @@
                 </div>
                 <div class="card-body">
                     <div class="ai-viewport">
-                        <!-- Live camera feed placeholder -->
-                        <div class="camera-feed">
-                            <div class="processing-overlay">
-                                <div class="processing-info">
-                                    <div class="confidence-meter">
-                                        <div class="confidence-fill" style="width: 78%"></div>
-                                        <span>78% Confidence</span>
-                                    </div>
-                                    <div class="decision-badge success">
-                                        Honey Badger Detected
+                        <!-- Dynamic camera feed -->
+                        <div class="camera-feed" id="live-feed">
+                            {% if detection %}
+                                <img src="{{ detection.input.image.url }}" alt="Latest Detection" class="img-fluid">
+                                <div class="processing-overlay">
+                                    <div class="processing-info">
+                                        <div class="confidence-meter">
+                                            <div class="confidence-fill" style="width: {{ detection.confidence|default:0 }}%"></div>
+                                            <span>{{ detection.confidence|default:"0" }}% Confidence</span>
+                                        </div>
+                                        <div class="decision-badge {% if detection.detected %}success{% else %}warning{% endif %}">
+                                            {% if detection.detected %}Honey Badger Detected{% else %}No Detection{% endif %}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% else %}
+                                <div class="no-detection">
+                                    <i class='bx bx-camera-off'></i>
+                                    <p>No detection data available</p>
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="camera-controls">
                             <button class="btn-control">
                                 <i class='bx bx-zoom-in'></i>
                             </button>
-                            <button class="btn-control active">
-                                <i class='bx bx-current-location'></i>
+                            <button class="btn-control active" id="refresh-btn">
+                                <i class='bx bx-refresh'></i>
                             </button>
                             <button class="btn-control">
                                 <i class='bx bx-time'></i>
@@ -49,26 +58,32 @@
                 <div class="card-body">
                     <div class="detail-item">
                         <span class="detail-label">Model Version:</span>
-                        <span class="detail-value">v2.3.1</span>
+                        <span class="detail-value">{{ model_version }}</span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Inference Time:</span>
-                        <span class="detail-value">142ms</span>
+                        <span class="detail-label">Last Detection:</span>
+                        <span class="detail-value" id="last-detection-time">
+                            {% if detection %}{{ detection.input.timestamp|timesince }} ago{% else %}Never{% endif %}
+                        </span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Last Training:</span>
-                        <span class="detail-value">2023-07-15</span>
+                        <span class="detail-label">Confidence:</span>
+                        <span class="detail-value" id="current-confidence">
+                            {% if detection %}{{ detection.confidence|floatformat:1 }}%{% else %}0%{% endif %}
+                        </span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Accuracy:</span>
-                        <span class="detail-value">94.2%</span>
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value" id="current-status">
+                            {% if detection %}{% if detection.detected %}Active{% else %}Inactive{% endif %}{% else %}Offline{% endif %}
+                        </span>
                     </div>
                     <div class="model-actions mt-3">
-                        <button class="btn-sm btn-outline">
-                            <i class='bx bx-reset'></i> Reset Model
+                        <button class="btn-sm btn-outline" id="reset-btn">
+                            <i class='bx bx-reset'></i> Reset View
                         </button>
-                        <button class="btn-sm btn-primary">
-                            <i class='bx bx-cloud-upload'></i> Update
+                        <button class="btn-sm btn-primary" id="manual-refresh">
+                            <i class='bx bx-refresh'></i> Refresh Now
                         </button>
                     </div>
                 </div>
@@ -77,4 +92,4 @@
     </div>
 </section>
 
-{% endblock content %}
+{% endblock %}
