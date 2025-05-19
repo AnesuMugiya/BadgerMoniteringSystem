@@ -15,7 +15,11 @@
                         <!-- Dynamic camera feed -->
                         <div class="camera-feed" id="live-feed">
                             {% if detection %}
-                                <img src="{{ detection.input.image.url }}" alt="Latest Detection" class="img-fluid">
+                                <img src="{{ detection.output.url }}" alt="Latest Detection" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                {% comment %} {% else %}
+                                    <!-- Fallback to input image if output doesn't exist -->
+                                    <img src="{{ detection.input.image.url }}" alt="Original Image" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                {% endif %} {% endcomment %}
                                 <div class="processing-overlay">
                                     <div class="processing-info">
                                         <div class="confidence-meter">
@@ -38,9 +42,9 @@
                             <button class="btn-control">
                                 <i class='bx bx-zoom-in'></i>
                             </button>
-                            <button class="btn-control active" id="refresh-btn">
+                            <a href="{% url 'ai_dashboard' %}" class="btn-control active" id="refresh-btn" style="text-decoration: none;">
                                 <i class='bx bx-refresh'></i>
-                            </button>
+                            </a>
                             <button class="btn-control">
                                 <i class='bx bx-time'></i>
                             </button>
@@ -79,12 +83,9 @@
                         </span>
                     </div>
                     <div class="model-actions mt-3">
-                        <button class="btn-sm btn-outline" id="reset-btn">
-                            <i class='bx bx-reset'></i> Reset View
-                        </button>
-                        <button class="btn-sm btn-primary" id="manual-refresh">
+                        <a href="{% url 'ai_dashboard' %}" class="btn-sm btn-primary" id="manual-refresh" style="text-decoration: none;">
                             <i class='bx bx-refresh'></i> Refresh Now
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
